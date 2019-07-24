@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,11 @@
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 </head>
-<body>
-  <div id="app">Eyo</div>
 
-  <script>
+<body>
+  <div id="app">React App</div>
+
+  <script type="text/babel">
     const name = 'Crystal';
     const handle = '@cort0619';
 
@@ -56,17 +58,18 @@
         </div>
       )
     }
-
-    const wrapperElement = React.createElement(
-      'div',
-      { id: 'container'},
-      React.createElement(NameComponent, { name }),
-      React.createElement(HandleComponent, { handle })
-      // NameComponent({ name }),
-      // HandleComponent({ handle })
-    )
+    /*
+        const wrapperElement = React.createElement(
+          'div',
+          { id: 'container'},
+          React.createElement(NameComponent, { name }),
+          React.createElement(HandleComponent, { handle })
+          // NameComponent({ name }),
+          // HandleComponent({ handle })
+        )*/
     // ReactDOM.render(wrapperElement, document.querySelector('#app'));
     ReactDOM.render(<App />, document.querySelector('#app'));
   </script>
 </body>
+
 </html>
