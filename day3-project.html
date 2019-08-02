@@ -27,6 +27,22 @@
     </script>
 
     <script type='text/babel'>
+    function LanguageList(props) {
+        return (
+            <ul>
+            {props.languages.map((lang) => (
+                <li key={lang}>{lang}</li>
+            ))}
+            </ul>
+        );
+    }
+
+    function DisplayPopularRepos(props) {
+        return (
+
+        );
+    }
+
     class Loading extends React.Component {
       constructor(props) {
         super(props);
@@ -40,27 +56,44 @@
           this.state.text === stopper
             ? this.setState(() => ({ text: 'Loading' }))
             : this.setState((prevState) => ({ text: prevState.text + '.' }))
-        }, 300)
+        }, 300);
       }
       componentWillUnmount() {
         window.clearInterval(this.interval);
       }
       render() {
         return (
-          <p>
+          <h2>
             {this.state.text}
-          </p>
+          </h2>
         )
       }
     }
+
     class App extends React.Component {
-      render() {
-        return (
-          <div>
-            
-          </div>
-        )
-      }
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                loading: true
+            };
+        }
+        componentDidMount() {
+            API.fetchPopularRepos(/*language*/);
+        }
+
+        render() {
+            if (this.state.loading) {
+                return <Loading />;
+            }
+            return (
+            <div>
+                <h2>GitHub's Most Popular Repos</h2>
+                <LanguageList languages={} />
+                <DisplayPopularRepos repos={} />
+            </div>
+            );
+        }
     }
     ReactDOM.render(
       <App />,
