@@ -27,20 +27,20 @@
     </script>
 
     <script type='text/babel'>
-    function LanguageList(props) {
-        return (
-            <ul>
-            {props.languages.map((lang) => (
-                <li key={lang}>{lang}</li>
-            ))}
-            </ul>
-        );
-    }
-
     function DisplayPopularRepos(props) {
-        return (
-
-        );
+      return (
+        <ul>
+          {props.repos.map((repo) => (
+            <li key={repo.id}>
+              <ul>
+                <li><a href={repo.html_url}>{repo.name}</a></li>
+                <li>@{repo.owner.login}</li>
+                <li>{repo.stargazers_count} stars</li>
+              </ul>
+            </li>
+          ))}
+        </ul>
+      );
     }
 
     class Loading extends React.Component {
@@ -75,24 +75,66 @@
             super(props);
 
             this.state = {
-                loading: true
+                loading: true,
+                selectedLang: 'all',
+                repos: []
             };
         }
         componentDidMount() {
-            API.fetchPopularRepos(/*language*/);
+          this.fetchRepos();
+        }
+
+        setSelectedLang(lang) {
+          this.setState({
+            selectedLang: lang
+          });
+          this.fetchRepos();
+        }
+
+        fetchRepos() {
+          API.fetchPopularRepos(this.state.selectedLang)
+            .then((repos) => {
+              console.log('repos ', repos);
+              this.setState((currentState) => {
+                if (currentState.loading) { 
+                  return {
+                    loading: false,
+                    repos
+                  }
+                }
+                return {
+                  repos
+                }
+              });
+            });
         }
 
         render() {
+          const languages = [
+            'javascript',
+            'ruby',
+            'python',
+            'all'
+          ];
+       
             if (this.state.loading) {
                 return <Loading />;
             }
             return (
-            <div>
-                <h2>GitHub's Most Popular Repos</h2>
-                <LanguageList languages={} />
-                <DisplayPopularRepos repos={} />
-            </div>
-            );
+              <div>
+                  <h2>GitHub's Most Popular Repos</h2>
+                  <div>
+                    <ul>
+                      {languages.map((lang) => (
+                        <li key={lang} onClick={() => this.setSelectedLang(lang)}>
+                          <a href="#">{lang}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <DisplayPopularRepos repos={this.state.repos} />
+              </div>
+            )
         }
     }
     ReactDOM.render(
