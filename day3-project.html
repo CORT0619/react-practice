@@ -107,6 +107,12 @@
           this.fetchRepos();
         }
 
+        componentDidUpdate(prevProps, prevState, snapshot) {
+          if (prevState.selectedLang !== this.state.selectedLang) {
+            this.fetchRepos();
+          }
+        }
+
         handleNav(selectedLang) {
           this.setState({
             selectedLang
